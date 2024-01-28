@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  hass-proxy:
+    build: ./
+    ports:
+      - "${PORT:-3333}:${PORT:-3333}"
+    env_file:
+      - .env
+    volumes:
+      - ./services.yaml:/services.yaml
