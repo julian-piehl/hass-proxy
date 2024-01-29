@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { CleanedEnv, EnvError, cleanEnv, makeValidator, port, str } from "envalid";
+import { CleanedEnv, EnvError, bool, cleanEnv, host, makeValidator, port, str } from "envalid";
 
 dotenv.config();
 
@@ -16,5 +16,10 @@ export default cleanEnv(process.env, {
 	HASS_HOST: baseUrl({ desc: 'URL of the Homeassistant instance including http(s)', example: 'http://homeassistant.local' }),
 	PROXY_HOST: baseUrl({ desc: 'URL of the Proxy including http(s)', example: 'http://homeassistant.local:3333' }),
 	SECRET: str( {desc: 'Secret for data encoding (random string)', example: 'MY_SUPER_SECRET' }),
-	PORT: port({ desc: 'Port for serving the web frontend', example: '3333', default: 3333 })
+	PORT: port({ desc: 'Port for serving the web frontend', example: '3333', default: 3333 }),
+
+	REDIS_ENABLE: bool({ desc: 'Enable Redis for Session Storage (recommended)', default: true }),
+	REDIS_HOST: host({ desc: 'Redis IP Address', example: '127.0.0.1', default: '127.0.0.1' }),
+	REDIS_PORT: port({ desc: 'Redis Port', example: '6379', default: 6379 }),
+	REDIS_PASSWORD: str({ desc: 'Redis Password', example: 'CatS', default: '' }),
 });

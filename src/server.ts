@@ -4,6 +4,7 @@ import "./services";
 import { createServer } from "http";
 import httpProxy from "http-proxy";
 import services from "./services";
+import { tokenMustBeRefreshed } from "./hassOauth";
 
 const server = createServer(app.server);
 
@@ -22,17 +23,26 @@ server.on('upgrade', (req, socket, head) => {
 		return socket.destroy();
 	}
 
-	let sid: string = parseCookie(req.headers.cookie)['connect.sid'];
+	let sid: string = parseCookie(req.headers.cookie)['hass-proxy.sid'];
 	sid = sid.substring(sid.indexOf(':') + 1, sid.indexOf('.'));
 	if(!sid) {
 		return socket.destroy();
 	}
 
 	app.sessionStore.get(sid, (err, obj) => {
-		if(!err && obj && obj.hassAuth) {
-			return proxy.ws(req, socket, head, { target: services[obj.activeService].url });
+		if(err)  {
+			return socket.destroy();
 		}
-		return socket.destroy();
+		
+		if(!obj || !obj.hassAuth || !obj.activeService)  {
+			return socket.destroy();
+		}
+
+		if(tokenMustBeRefreshed(obj.hassAuth)) {
+			return socket.destroy();
+		}
+
+		return proxy.ws(req, socket, head, { target: services[obj.activeService].url });
 	});
 });
 

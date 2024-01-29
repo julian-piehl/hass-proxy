@@ -22,4 +22,6 @@ RUN yarn install --production --frozen-lockfile
 COPY --from=builder --chown=node:node /usr/src/app/dist ./dist
 
 EXPOSE 3333
+VOLUME "/services.yaml"
+
 CMD [ "node", "./dist/server.js"]

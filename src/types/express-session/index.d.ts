@@ -1,9 +1,12 @@
-import { SessionData } from "express-session"
-import { HassAuthCallback } from '../../models/HassAuth';
+import { HassAuthToken } from '../../models/HassAuth';
 
-declare module 'express-session' {
-	export interface SessionData {
-		hassAuth: HassAuthCallback;
-		activeService: string;
+
+declare global {
+	namespace Express {
+		interface SessionData {
+			hassAuth?: HassAuthToken;
+			activeService?: string;
+			redirectPath?: string;
+		}
 	}
 }
