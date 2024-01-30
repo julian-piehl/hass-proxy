@@ -4,11 +4,15 @@
 	"main": "dist/server.js",
 	"license": "MIT",
 	"scripts": {
-		"dev": "nodemon src/server.ts -- --inspect",
-		"build": "tsc --project ./",
+		"build": "yarn clean && yarn build:app && yarn build:tailwind && yarn copy-public-files",
+		"build:app": "tsc --project ./",
+		"build:tailwind": "tailwindcss -i ./src/public/input.css -o ./src/public/output.css --minify",
 		"start": "node dist/server.js",
+		"dev": "concurrently --prefix \"[{time}] {name} -\" --prefix-colors #50c0f2,gray --kill-others \"yarn:dev:*\"",
+		"dev:app": "nodemon src/server.ts -- --inspect --esm",
 		"dev:tailwind": "tailwindcss -i ./src/public/input.css -o ./src/public/output.css --watch",
-		"build:tailwind": "tailwindcss -i ./src/public/input.css -o ./src/public/output.css --minify"
+		"copy-public-files": "copyfiles --flat ./src/public/index.html ./src/public/output.css ./dist/public",
+		"clean": "rimraf ./dist/"
 	},
 	"dependencies": {
 		"axios": "^1.6.5",
@@ -28,9 +32,16 @@
 		"@types/express-session": "1.17.0",
 		"@types/http-proxy": "^1.17.14",
 		"@types/node": "^20.11.6",
+		"concurrently": "^8.2.2",
+		"copyfiles": "^2.4.1",
 		"nodemon": "^3.0.3",
+		"rimraf": "^5.0.5",
 		"tailwindcss": "^3.4.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.3.3"
+	},
+	"resolutions": {
+		"strip-ansi": "6.0.1",
+		"string-width": "4.2.3"
 	}
 }
