@@ -19,7 +19,7 @@ export default cleanEnv(process.env, {
 	PORT: port({ desc: 'Port for serving the web frontend', example: '3333', default: 3333 }),
 
 	REDIS_ENABLE: bool({ desc: 'Enable Redis for Session Storage (recommended)', default: true }),
-	REDIS_HOST: host({ desc: 'Redis IP Address', example: '127.0.0.1', default: '127.0.0.1' }),
+	REDIS_HOST: host({ desc: 'Redis Hostname or IP Address', example: '127.0.0.1', default: 'redis' }),
 	REDIS_PORT: port({ desc: 'Redis Port', example: '6379', default: 6379 }),
 	REDIS_PASSWORD: str({ desc: 'Redis Password', example: 'CatS', default: '' }),
 });
