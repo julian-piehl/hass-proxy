@@ -15,6 +15,7 @@
 		"clean": "rimraf ./dist/"
 	},
 	"dependencies": {
+		"@godaddy/terminus": "^4.12.1",
 		"axios": "^1.6.5",
 		"chalk": "4.1.2",
 		"connect-redis": "^7.1.1",

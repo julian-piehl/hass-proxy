@@ -23,5 +23,6 @@ COPY --from=builder --chown=node:node /usr/src/app/dist ./dist
 
 EXPOSE 3333
 VOLUME "/services.yaml"
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "curl", "--fail", "http://localhost:3333/hass-proxy/health" ]
 
 CMD [ "node", "./dist/server.js"]
